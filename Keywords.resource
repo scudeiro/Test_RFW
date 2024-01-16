@@ -36,7 +36,8 @@ User Login
     Wait Until Element Is Visible    ${user_element}
 
 Get URLs From File
-    File Should Exist    ${CURDIR}${URLS_FILE}    File "${URLS_FILE}" not Found!
+    ${filepath}=    set variable    ${CURDIR}\\${URLS_FILE}
+    File Should Exist    ${filepath}    File "${URLS_FILE}" not Found!
     ${content}=    Get File    ${URLS_FILE}
     ${content}=    Split String    ${content}    \n
     Set Suite Variable    ${urls}    ${content}
