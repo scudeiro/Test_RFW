@@ -38,7 +38,7 @@ User Login
 Get URLs From File
     ${filepath}=    set variable    ${CURDIR}\\${URLS_FILE}
     File Should Exist    ${filepath}    File "${URLS_FILE}" not Found!
-    ${content}=    Get File    ${URLS_FILE}
+    ${content}=    Get File    ${filepath}
     ${content}=    Split String    ${content}    \n
     Set Suite Variable    ${urls}    ${content}
 
