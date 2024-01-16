@@ -9,13 +9,9 @@ Resource          Keywords.resource
 ${BROWSER}      Chrome
 ${HEADLESS}      False
 ${TRIES}      3
-#${URLS_FILE}      urlist.txt
 ${URLS_FILE}      AT_URL_list.txt
-#${ENVIRONMENT}    https://www.osquay.com/
 ${ENVIRONMENT}    https://appsdev.iohub.pt/
 ${TIMEOUT}    5
-#${USER}    auto.admin
-#${PASS}    123456
 ${USER}    bruno.calado@osquay.com
 ${PASS}    123456
 
