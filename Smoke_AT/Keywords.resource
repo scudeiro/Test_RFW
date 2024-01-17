@@ -88,7 +88,8 @@ Take Screenshots
     ${filename}=    Replace String    ${filename}    :    _
     ${filename}=    Replace String    ${filename}    *    _
     ${filename}=    Replace String    ${filename}    ?    _
-    Capture Page Screenshot    filename=${filename}.png
+    #Capture Page Screenshot    filename=${filename}.png
+    Capture Page Screenshot    EMBED
 
 Validate Page
     [Arguments]    ${status}    ${page}
