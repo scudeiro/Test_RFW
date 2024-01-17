@@ -14,6 +14,8 @@ Start Task
 Prepare Results Data
     ${data}=    Create List
     Set Suite Variable    ${data}    ${data}
+    ${folder}=    set variable    ${CURDIR}\\images
+    Set Screenshot Directory    ${folder}
 
 Open Defined Browser
     ${browser}=    Convert To Lower Case    ${browser}
@@ -54,13 +56,15 @@ Load Page
     Set To Dictionary    ${solution_result}    page    ${page}
     Set To Dictionary    ${solution_result}    url    ${url}
     Set To Dictionary    ${solution_result}    status    ${status}
-    ${value}=    Get From List    ${perfs}    0
-    Set To Dictionary    ${solution_result}    BE    ${value}
-    ${value}=    Get From List    ${perfs}    1
-    Set To Dictionary    ${solution_result}    FE    ${value}
-    ${value}=    Get From List    ${perfs}    2
-    Set To Dictionary    ${solution_result}    total    ${value}
+    ${value1}=    Get From List    ${perfs}    0
+    Set To Dictionary    ${solution_result}    BE    ${value1}
+    ${value2}=    Get From List    ${perfs}    1
+    Set To Dictionary    ${solution_result}    FE    ${value2}
+    ${value3}=    Get From List    ${perfs}    2
+    Set To Dictionary    ${solution_result}    total    ${value3}
     Append To List    ${data}    ${solution_result}
+    Log To Console    expected_url;current_url;status;BE [s];FE [s];total [s]
+    Log To Console    ${page};${url};${status};${value1};${value2};${value3}
 
 Go To Page
     [Arguments]    ${page}
@@ -109,9 +113,9 @@ Validate Page
 
 End Task
     Close Browser
-    Log To Console    > Loging results ...
-    ${n}=    Get Length    ${data}
-    Run Keyword If    ${n}    Log pages Performance
+#    Log To Console    > Loging results ...
+#    ${n}=    Get Length    ${data}
+#    Run Keyword If    ${n}    Log pages Performance
 
 Log pages Performance
     Log To Console    expected_url;current_url;status;BE [s];FE [s];total [s]
