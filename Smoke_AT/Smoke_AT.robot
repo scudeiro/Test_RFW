@@ -18,6 +18,7 @@ ${PASS}    123456
 *** Test Cases ***
 Load Pages
     FOR    ${url}    IN    @{urls}
-        Log To Console    > Load Page URL "${url}"
+        #Log To Console    > Load Page URL "${url}"
+        Log    Load Page URL "${url}"
         Load Page    ${url}
     END

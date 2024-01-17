@@ -14,8 +14,8 @@ Start Task
 Prepare Results Data
     ${data}=    Create List
     Set Suite Variable    ${data}    ${data}
-    ${folder}=    set variable    ${CURDIR}\\images
-    Set Screenshot Directory    ${folder}
+#    ${folder}=    set variable    ${CURDIR}\\images
+#    Set Screenshot Directory    ${folder}
 
 Open Defined Browser
     ${browser}=    Convert To Lower Case    ${browser}
@@ -47,24 +47,30 @@ Get URLs From File
 Load Page
     [Arguments]    ${page}
     ${status}    ${perfs}=    Run Keyword And Ignore Error    Wait Until Keyword Succeeds    ${TRIES}x    0    Go To Page    ${page}
-    Take Screenshots    ${page}
-    ${status}    ${url}=    Validate Page    ${status}    ${page}
-    ${n}=    Get Length    ${perfs}
-    ${perfs}=    Run Keyword If    ${n}!=3    Create List    N/A    N/A    N/A
-    ...    ELSE    Set Variable    ${perfs}
-    ${solution_result}=    Create Dictionary
-    Set To Dictionary    ${solution_result}    page    ${page}
-    Set To Dictionary    ${solution_result}    url    ${url}
-    Set To Dictionary    ${solution_result}    status    ${status}
-    ${value1}=    Get From List    ${perfs}    0
-    Set To Dictionary    ${solution_result}    BE    ${value1}
-    ${value2}=    Get From List    ${perfs}    1
-    Set To Dictionary    ${solution_result}    FE    ${value2}
-    ${value3}=    Get From List    ${perfs}    2
-    Set To Dictionary    ${solution_result}    total    ${value3}
-    Append To List    ${data}    ${solution_result}
-    Log To Console    expected_url;current_url;status;BE [s];FE [s];total [s]
-    Log To Console    ${page};${url};${status};${value1};${value2};${value3}
+    #Take Screenshots    ${page}
+    Sleep    ${TIMEOUT}
+    Capture Page Screenshot    EMBED
+    ${status}    ${url}    ${error}=    Validate Page    ${status}    ${page}
+    log    Status:${status}
+    log    Current_URL:${url}
+    log    ERROR:${error}
+
+#    ${n}=    Get Length    ${perfs}
+#    ${perfs}=    Run Keyword If    ${n}!=3    Create List    N/A    N/A    N/A
+#    ...    ELSE    Set Variable    ${perfs}
+#    ${solution_result}=    Create Dictionary
+#    Set To Dictionary    ${solution_result}    page    ${page}
+#    Set To Dictionary    ${solution_result}    url    ${url}
+#    Set To Dictionary    ${solution_result}    status    ${status}
+#    ${value1}=    Get From List    ${perfs}    0
+#    Set To Dictionary    ${solution_result}    BE    ${value1}
+#    ${value2}=    Get From List    ${perfs}    1
+#    Set To Dictionary    ${solution_result}    FE    ${value2}
+#    ${value3}=    Get From List    ${perfs}    2
+#    Set To Dictionary    ${solution_result}    total    ${value3}
+#    Append To List    ${data}    ${solution_result}
+#    Log To Console    expected_url;current_url;status;BE [s];FE [s];total [s]
+#    Log To Console    ${page};${url};${status};${value1};${value2};${value3}
 
 Go To Page
     [Arguments]    ${page}
@@ -100,7 +106,8 @@ Validate Page
     ${url}=    Get Substring    ${url}    0    -1
     END
     ${status}=    Set Variable If    '${url}'=='${page}'    ${status}    FAIL
-    Return From Keyword If    '${status}'=='FAIL'    ${status}    ${url}
+    ${error}=    Set Variable If    '${url}'=='${page}'    URL not espected    ${EMPTY}
+    Return From Keyword If    '${status}'=='FAIL'    ${status}    ${url}    ${error}
     ${error1}    Set Variable    Wrong URL address
     ${error2}    Set Variable    404
     ${error3}    Set Variable    not found
@@ -110,7 +117,9 @@ Validate Page
     ${is_error2}    Get Count    ${text}    ${error3}
     ${is_errorB}    Set Variable    ${${is_error1}+${is_error2}-${1}}
     ${status}=    Set Variable If    ${is_errorA}>0 or ${is_errorB}>0    FAIL    ${status}
-    [Return]    ${status}    ${url}
+    ${error}=    Set Variable If    ${is_errorA}>0    ${error1}    ${EMPTY}
+    ${error}=    Set Variable If    ${is_errorB}>0    404 or not found displayed    ${error}
+    [Return]    ${status}    ${url}    ${error}
 
 End Task
     Close Browser
