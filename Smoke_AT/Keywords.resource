@@ -24,7 +24,7 @@ Open Defined Browser
     Maximize Browser Window
 
 User Login
-    Log To Console    > Performing Login...
+    #Log To Console    > Performing Login...
     ${loc_username}=    Get From Dictionary    ${LoginPage}    username
     ${loc_pass}=    Get From Dictionary    ${LoginPage}    password
     ${loc_btn}=    Get From Dictionary    ${LoginPage}    login
@@ -54,24 +54,25 @@ Load Page
     log    Status:${status}
     log    Current_URL:${url}
     log    ERROR:${error}
-    Log    <a href="file://${CURDIR}/results.txt">The result is results.txt</a>    html=True
-    Log    <a href="file://${CURDIR}/test_csv.csv">The result is test_csv.csv</a>    html=True
+    Run Keyword If    '${status}'=='FAIL'    Save Results    ${page}    ${url}    ${status}    ${error}
 
-
+Save Results
+    [Arguments]    ${page}    ${url}    ${status}    ${error}
 #    ${n}=    Get Length    ${perfs}
 #    ${perfs}=    Run Keyword If    ${n}!=3    Create List    N/A    N/A    N/A
 #    ...    ELSE    Set Variable    ${perfs}
-#    ${solution_result}=    Create Dictionary
-#    Set To Dictionary    ${solution_result}    page    ${page}
-#    Set To Dictionary    ${solution_result}    url    ${url}
-#    Set To Dictionary    ${solution_result}    status    ${status}
+    ${solution_result}=    Create Dictionary
+    Set To Dictionary    ${solution_result}    page    ${page}
+    Set To Dictionary    ${solution_result}    url    ${url}
+    Set To Dictionary    ${solution_result}    status    ${status}
+    Set To Dictionary    ${solution_result}    error    ${error}
 #    ${value1}=    Get From List    ${perfs}    0
 #    Set To Dictionary    ${solution_result}    BE    ${value1}
 #    ${value2}=    Get From List    ${perfs}    1
 #    Set To Dictionary    ${solution_result}    FE    ${value2}
 #    ${value3}=    Get From List    ${perfs}    2
 #    Set To Dictionary    ${solution_result}    total    ${value3}
-#    Append To List    ${data}    ${solution_result}
+    Append To List    ${data}    ${solution_result}
 #    Log To Console    expected_url;current_url;status;BE [s];FE [s];total [s]
 #    Log To Console    ${page};${url};${status};${value1};${value2};${value3}
 
@@ -121,26 +122,23 @@ Validate Page
     ${is_errorB}    Set Variable    ${${is_error1}+${is_error2}-${1}}
     ${status}=    Set Variable If    ${is_errorA}>0 or ${is_errorB}>0    FAIL    ${status}
     ${error}=    Set Variable If    ${is_errorA}>0    ${error1}    ${EMPTY}
-    ${error}=    Set Variable If    ${is_errorB}>0    404 or not found displayed    ${error}
+    ${error}=    Set Variable If    ${is_errorB}>0    '404' Error or 'not found' displayed in the page    ${error}
     [Return]    ${status}    ${url}    ${error}
 
 End Task
     Close Browser
 #    Log To Console    > Loging results ...
-#    ${n}=    Get Length    ${data}
-#    Run Keyword If    ${n}    Log pages Performance
+    ${n}=    Get Length    ${data}
+    Run Keyword If    ${n}    Log pages Performance
 
 Log pages Performance
-    Log To Console    expected_url;current_url;status;BE [s];FE [s];total [s]
+    #Log To Console    expected_url;current_url;status;BE [s];FE [s];total [s]
     FOR    ${solution_data}    IN    @{data}
         ${page}=    Get From Dictionary    ${solution_data}    page
         ${url}=    Get From Dictionary    ${solution_data}    url
         ${status}=    Get From Dictionary    ${solution_data}    status
-        ${BE}=    Get From Dictionary    ${solution_data}    BE
-        ${FE}=    Get From Dictionary    ${solution_data}    FE
-        ${total}=    Get From Dictionary    ${solution_data}    total
-        ${text}=    Set Variable    ${page};${url};${status};${BE};${FE};${total}
-        Log To Console    ${text}
+        ${error}=    Get From Dictionary    ${solution_data}    error
+        Log    Expected URL: ${page}; Current_URL:${url}; Status: ${status}; ERROR: ${error}
     END
 
 
