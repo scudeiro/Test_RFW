@@ -54,6 +54,9 @@ Load Page
     log    Status:${status}
     log    Current_URL:${url}
     log    ERROR:${error}
+    Log    <a href="file://${CURDIR}/results.txt">The result is results.txt</a>    html=True
+    Log    <a href="file://${CURDIR}/test_csv.csv">The result is test_csv.csv</a>    html=True
+
 
 #    ${n}=    Get Length    ${perfs}
 #    ${perfs}=    Run Keyword If    ${n}!=3    Create List    N/A    N/A    N/A
