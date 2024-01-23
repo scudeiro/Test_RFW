@@ -8,14 +8,14 @@ Library           String
 Start Task
     Prepare Results Data
     Open Defined Browser
-    User Login
-    Get URLs From File
+    Run Keyword If    '${url_source}'=='file'    Get URLs From File
+    Run Keyword If    '${url_source}'=='api'    Get Urls From Api
+    Run Keyword If    '${url_source}'=='variable'    Get Urls From Variable
+    Run Keyword If    ${perform_login}    User Login
 
 Prepare Results Data
     ${data}=    Create List
     Set Suite Variable    ${data}    ${data}
-#    ${folder}=    set variable    ${CURDIR}\\images
-#    Set Screenshot Directory    ${folder}
 
 Open Defined Browser
     ${browser}=    Convert To Lower Case    ${browser}
@@ -24,7 +24,6 @@ Open Defined Browser
     Maximize Browser Window
 
 User Login
-    #Log To Console    > Performing Login...
     ${loc_username}=    Get From Dictionary    ${LoginPage}    username
     ${loc_pass}=    Get From Dictionary    ${LoginPage}    password
     ${loc_btn}=    Get From Dictionary    ${LoginPage}    login
@@ -44,6 +43,13 @@ Get URLs From File
     ${content}=    Split String    ${content}    \n
     Set Suite Variable    ${urls}    ${content}
 
+Get URLs From Api
+    log    Using Api
+
+Get URLs From Variable
+    log    Using Variable
+    Set Suite Variable    @{urls}    @{URLS_VARIABLE}
+
 Load Page
     [Arguments]    ${page}
     ${status}    ${perfs}=    Run Keyword And Ignore Error    Wait Until Keyword Succeeds    ${TRIES}x    0    Go To Page    ${page}
@@ -58,23 +64,12 @@ Load Page
 
 Save Results
     [Arguments]    ${page}    ${url}    ${status}    ${error}
-#    ${n}=    Get Length    ${perfs}
-#    ${perfs}=    Run Keyword If    ${n}!=3    Create List    N/A    N/A    N/A
-#    ...    ELSE    Set Variable    ${perfs}
     ${solution_result}=    Create Dictionary
     Set To Dictionary    ${solution_result}    page    ${page}
     Set To Dictionary    ${solution_result}    url    ${url}
     Set To Dictionary    ${solution_result}    status    ${status}
     Set To Dictionary    ${solution_result}    error    ${error}
-#    ${value1}=    Get From List    ${perfs}    0
-#    Set To Dictionary    ${solution_result}    BE    ${value1}
-#    ${value2}=    Get From List    ${perfs}    1
-#    Set To Dictionary    ${solution_result}    FE    ${value2}
-#    ${value3}=    Get From List    ${perfs}    2
-#    Set To Dictionary    ${solution_result}    total    ${value3}
     Append To List    ${data}    ${solution_result}
-#    Log To Console    expected_url;current_url;status;BE [s];FE [s];total [s]
-#    Log To Console    ${page};${url};${status};${value1};${value2};${value3}
 
 Go To Page
     [Arguments]    ${page}
@@ -90,16 +85,16 @@ Go To Page
     Wait Until Element Is Visible    xpath:/html/body    ${TIMEOUT}
     [Return]    ${perfs}
 
-Take Screenshots
-    [Arguments]    ${page}
-    Sleep    ${TIMEOUT}
-    ${filename}=    Remove String    ${page}    ${ENVIRONMENT}
-    ${filename}=    Replace String    ${filename}    /    _
-    ${filename}=    Replace String    ${filename}    :    _
-    ${filename}=    Replace String    ${filename}    *    _
-    ${filename}=    Replace String    ${filename}    ?    _
-    #Capture Page Screenshot    filename=${filename}.png
-    Capture Page Screenshot    EMBED
+#Take Screenshots
+#    [Arguments]    ${page}
+#    Sleep    ${TIMEOUT}
+#    ${filename}=    Remove String    ${page}    ${ENVIRONMENT}
+#    ${filename}=    Replace String    ${filename}    /    _
+#    ${filename}=    Replace String    ${filename}    :    _
+#    ${filename}=    Replace String    ${filename}    *    _
+#    ${filename}=    Replace String    ${filename}    ?    _
+#    #Capture Page Screenshot    filename=${filename}.png
+#    Capture Page Screenshot    EMBED
 
 Validate Page
     [Arguments]    ${status}    ${page}
@@ -127,12 +122,10 @@ Validate Page
 
 End Task
     Close Browser
-#    Log To Console    > Loging results ...
     ${n}=    Get Length    ${data}
     Run Keyword If    ${n}    Log pages Performance
 
 Log pages Performance
-    #Log To Console    expected_url;current_url;status;BE [s];FE [s];total [s]
     FOR    ${solution_data}    IN    @{data}
         ${page}=    Get From Dictionary    ${solution_data}    page
         ${url}=    Get From Dictionary    ${solution_data}    url
