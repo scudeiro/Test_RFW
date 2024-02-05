@@ -1,5 +1,6 @@
 *** Settings ***
 Library           SeleniumLibrary    run_on_failure=No Operation
+Library           REST    ${APIDOMAIN}
 Library           Collections
 Library           OperatingSystem
 Library           String
@@ -44,7 +45,29 @@ Get URLs From File
     Set Suite Variable    ${urls}    ${content}
 
 Get URLs From Api
+    ${b}=    Create List    https://appsdev.iohub.pt/ATAdminPortal/TenantRobotsDetail    https://appsdev.iohub.pt/ATAdminPortal/TenantRobots    https://appsdev.iohub.pt/ATAdminPortal/RobotList    https://appsdev.iohub.pt/ATAdminPortal/RobotDetail
     log    Using Api
+    ${service1}    Set Variable    /api/deck/new/shuffle/?deck_count=1
+    get     ${service1}
+    ${deck_ids}=    string    $.deck_id
+    ${deck_id}=    get from list    ${deck_ids}    0
+    log     ${deck_id}    WARN
+    ${n_cards}=    integer    $.remaining
+    ${n_card}=    get from list    ${n_cards}    0
+    log     ${n_card}    WARN
+    ${service2}    Set Variable    /api/deck/${deck_id}/draw/?count=${N}
+    get     ${service2}
+    ${response}=    output schema     response body
+    #log     ${response}    WARN
+    ${a}=    Create List
+    FOR    ${idx}    IN RANGE    ${N}
+        ${value}=    string    $.cards[${idx}].value
+        ${suit}=    string    $.cards[${idx}].suit
+        log    ${value}[0] of ${suit}[0]    WARN
+        ${c}=    Get From List    ${b}    ${idx}
+        Append To List    ${a}    ${c}
+    END
+     Set Suite Variable    ${urls}    ${a}
 
 Get URLs From Variable
     ${text}    Split String    ${URLS_VARIABLE}    ,
