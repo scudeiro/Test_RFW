@@ -47,8 +47,8 @@ Get URLs From Api
     log    Using Api
 
 Get URLs From Variable
-    log    Using Variable
-    Set Suite Variable    @{urls}    @{URLS_VARIABLE}
+    ${text}    Split String    ${URLS_VARIABLE}    ,
+    Set Suite Variable    ${urls}    ${text}
 
 Load Page
     [Arguments]    ${page}
