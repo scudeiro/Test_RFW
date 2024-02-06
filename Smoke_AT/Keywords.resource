@@ -76,7 +76,6 @@ Get URLs From Variable
 Load Page
     [Arguments]    ${page}
     ${status}    ${perfs}=    Run Keyword And Ignore Error    Wait Until Keyword Succeeds    ${TRIES}x    0    Go To Page    ${page}
-    #Take Screenshots    ${page}
     Sleep    ${TIMEOUT}
     Capture Page Screenshot    EMBED
     ${status}    ${url}    ${error}=    Validate Page    ${status}    ${page}
@@ -107,17 +106,6 @@ Go To Page
     ${perfs}=    Create List    ${BEperf}    ${FEperf}    ${Tperf}
     Wait Until Element Is Visible    xpath:/html/body    ${TIMEOUT}
     [Return]    ${perfs}
-
-#Take Screenshots
-#    [Arguments]    ${page}
-#    Sleep    ${TIMEOUT}
-#    ${filename}=    Remove String    ${page}    ${ENVIRONMENT}
-#    ${filename}=    Replace String    ${filename}    /    _
-#    ${filename}=    Replace String    ${filename}    :    _
-#    ${filename}=    Replace String    ${filename}    *    _
-#    ${filename}=    Replace String    ${filename}    ?    _
-#    #Capture Page Screenshot    filename=${filename}.png
-#    Capture Page Screenshot    EMBED
 
 Validate Page
     [Arguments]    ${status}    ${page}

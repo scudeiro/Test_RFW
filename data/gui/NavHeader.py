@@ -8,10 +8,10 @@ class NavHeader(Navigator):
 
     _hid = {
         "home_page_icon" : "//div[@data-block='Common.Menu']//img[@alt='IO Hub logo']",
-        "user_area"      : "//div[contains(@data-block,'Common.UserInfo_V2')]",
-        #"user_area"      : "//div[@data-block='Common.UserInfo_TraditionalView']//img",
-        "logout"         : "//div[contains(@id,'employeeContainer')]//a[.='Logout']",
-        #"logout"         : "//div[contains(@id,'Tooltip')]//span[text()='Logout']",
+        #"user_area"      : "//div[contains(@data-block,'Common.UserInfo_V2')]",
+        "user_area"      : "//div[@data-block='Header.UserInfo_TraditionalView']//img",
+        #"logout"         : "//div[contains(@id,'employeeContainer')]//a[.='Logout']",
+        "logout"         : "//div[contains(@id,'Tooltip')]//span[text()='Logout']",
            }
 
     _htxt = {

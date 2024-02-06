@@ -16,8 +16,8 @@ class Home(Page, NavHeader):
         self.unique = []
 
     _id = {
-        "ref"                : "xpath://img[@alt='Profile picture']",  ##TOREVIEW
-        #"ref"                : "xpath://div[@data-block='Common.UserInfo_TraditionalView']//img",
+        #"ref"                : "xpath://img[@alt='Profile picture']",  ##TOREVIEW
+        "ref"                : "xpath://div[@data-block='Header.UserInfo_TraditionalView']//img",
         "page_title"         : "xpath://div[contains(@class,'page-title')]//span[text()='{text}']",
         "article_area"       : "xpath://div[@class='ThemeGrid_Width6']//span[text()='{text}']",
         "news_article"       : ArticleElement("News"),

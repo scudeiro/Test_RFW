@@ -26,7 +26,7 @@ ART-AND-01-a) - News Details Page Scroll (Employee)
     ...    *Post Conditions:*
     ...    No Article with "Automation News 01" in the title in the system.
     ...
-    [Tags]    DONE
+    [Tags]    DONE    RUN
     [Setup]    Create "NewsArticle01" Article
     Login As "Employee1" User
     Search "News" Article With "Automation News 01" Title
@@ -76,7 +76,7 @@ ART-AND-01-c) - News Details Page Scroll (TeamManager)
     ...    *Post Conditions:*
     ...    No Article with "Automation News 01" in the title in the system.
     ...
-    [Tags]    DONE
+    [Tags]    DONE    RUN
     [Setup]    Create "NewsArticle01" Article
     Login As "Manager1" User
     Search "News" Article With "Automation News 01" Title

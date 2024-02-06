@@ -24,7 +24,7 @@ ${N}              3
 
 *** Test Cases ***
 Load Pages
-    [Tags]    RUN
+    [Tags]    RUN1
     FOR    ${url}    IN    @{urls}
         #Log To Console    > Load Page URL "${url}"
         Log    Load Page URL "${url}"
