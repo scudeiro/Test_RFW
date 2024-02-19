@@ -1,4 +1,0 @@
-https://appsdev.iohub.pt/ATAdminPortal/TenantRobotsDetail
-https://appsdev.iohub.pt/ATAdminPortal/TenantRobotsX
-https://appsdev.iohub.pt/ATAdminPortal/RobotList
-https://appsdev.iohub.pt/ATAdminPortal/RobotDetailX
